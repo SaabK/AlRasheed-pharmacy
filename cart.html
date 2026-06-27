@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Cart — Al-Rasheed Pharmacy</title>
+<meta name="description" content="Review your cart and checkout via WhatsApp at Al-Rasheed Pharmacy, Mian Channu.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .checkout-section{display:none;}
+  .checkout-section.is-active{display:block;}
+  .success-box{text-align:center;padding:60px 20px;}
+  .success-box .check{
+    width:90px;height:90px;border-radius:50%;background:var(--green-700);color:#fff;display:flex;align-items:center;
+    justify-content:center;margin:0 auto 24px;font-size:2.4rem;animation:pop .5s ease;
+  }
+  @keyframes pop{0%{transform:scale(.4);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+  .mini-confetti{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;}
+  .confetti-piece{position:absolute;top:-20px;width:8px;height:14px;opacity:0;animation:fall 2.6s ease-in forwards;}
+  @keyframes fall{0%{opacity:1;transform:translateY(0) rotate(0);}100%{opacity:0;transform:translateY(100vh) rotate(360deg);}}
+  .step-indicator{display:flex;gap:10px;justify-content:center;margin-bottom:36px;}
+  .step-dot{width:10px;height:10px;border-radius:50%;background:var(--line);}
+  .step-dot.is-active{background:var(--green-700);width:26px;border-radius:6px;}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Skip to main content</a>
+<div class="offline-banner" role="alert">You're offline — some features may not work until you reconnect.</div>
+<div class="topbar"><div class="container">
+  <div class="topbar-links"><a href="tel:+923126285603">📞 0300-6327576</a><a href="https://wa.me/923126285603" target="_blank" rel="noopener">WhatsApp Orders</a></div>
+  <div class="topbar-links"><span>🕒 Open Daily · 9 AM – 12 AM</span></div>
+</div></div>
+<header class="navbar is-solid">
+  <div class="container">
+    <a href="index.html" class="brand"><span class="logo-mark">AR</span> Al-Rasheed Pharmacy</a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="delivery.html">Delivery</a><a href="contact.html">Contact</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="cart.html" class="icon-btn" aria-label="View cart" aria-current="page">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        <span class="cart-count" style="display:none">0</span>
+      </a>
+      <button class="hamburger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<div class="mobile-menu" aria-label="Mobile navigation">
+  <a href="index.html">Home</a><a href="products.html">Products</a><a href="about.html">About</a><a href="delivery.html">Delivery</a><a href="contact.html">Contact</a>
+</div>
+
+<main id="main">
+  <div class="page-header">
+    <div class="container">
+      <div class="breadcrumb"><a href="index.html">Home</a> / <span>Cart</span></div>
+      <h1>Your Cart</h1>
+    </div>
+  </div>
+
+  <section class="section-tight">
+    <div class="container">
+
+      <!-- STEP 1 — CART -->
+      <div class="checkout-section is-active" id="step-cart">
+        <div id="cartRoot"></div>
+      </div>
+
+      <!-- STEP 2 — CHECKOUT FORM -->
+      <div class="checkout-section" id="step-checkout">
+        <div class="step-indicator"><span class="step-dot"></span><span class="step-dot is-active"></span><span class="step-dot"></span></div>
+        <div class="cart-layout">
+          <div>
+            <h3 style="margin-bottom:20px;">Delivery Details</h3>
+            <form id="checkoutForm" novalidate>
+              <div class="form-grid">
+                <div class="field"><label for="custName">Full Name *</label><input id="custName" name="custName" required placeholder="e.g. Ahmad Raza"><span class="err">Please enter your name.</span></div>
+                <div class="field"><label for="custPhone">Phone Number *</label><input id="custPhone" name="custPhone" required placeholder="03XX-XXXXXXX" pattern="^[0-9\-+ ]{7,15}$"><span class="err">Enter a valid phone number.</span></div>
+                <div class="field full"><label for="custAddress">Delivery Address *</label><input id="custAddress" name="custAddress" required placeholder="House / Street / Area"><span class="err">Please enter your address.</span></div>
+                <div class="field"><label for="custLandmark">Nearby Landmark</label><input id="custLandmark" name="custLandmark" placeholder="e.g. Near Phatak Bazar"></div>
+                <div class="field"><label for="custCity">City *</label><input id="custCity" name="custCity" required value="Mian Channu"><span class="err">Please enter your city.</span></div>
+                <div class="field"><label for="custTime">Preferred Delivery Time</label>
+                  <select id="custTime" name="custTime">
+                    <option>As soon as possible</option>
+                    <option>Morning (9 AM – 12 PM)</option>
+                    <option>Afternoon (12 PM – 5 PM)</option>
+                    <option>Evening (5 PM – 9 PM)</option>
+                    <option>Late Night (9 PM – 12 AM)</option>
+                  </select>
+                </div>
+                <div class="field"><label for="custPayment">Payment Method *</label>
+                  <select id="custPayment" name="custPayment" required>
+                    <option value="Cash on Delivery">Cash on Delivery</option>
+                    <option value="Store Pickup">Store Pickup</option>
+                  </select>
+                </div>
+                <div class="field full"><label for="custNotes">Special Instructions</label><textarea id="custNotes" name="custNotes" rows="3" placeholder="Any notes for our delivery rider or pharmacist..."></textarea></div>
+              </div>
+              <div style="display:flex;gap:12px;margin-top:24px;">
+                <button type="button" class="btn btn-outline" id="backToCartBtn">Back to Cart</button>
+                <button type="submit" class="btn btn-primary">Review Order</button>
+              </div>
+            </form>
+          </div>
+          <div class="summary-card" id="summarySticky2"></div>
+        </div>
+      </div>
+
+      <!-- STEP 3 — ORDER SUCCESS -->
+      <div class="checkout-section" id="step-success">
+        <div class="success-box">
+          <div class="check">✓</div>
+          <h2 style="margin-bottom:10px;">Order Ready to Send!</h2>
+          <p style="color:var(--charcoal-60);max-width:480px;margin:0 auto 28px;">We've prepared your order summary. Tap below to open WhatsApp and send it to us — we'll confirm right away.</p>
+          <a class="btn btn-whatsapp" id="finalWhatsappBtn" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.85.5 3.58 1.43 5.06L2 22l5.21-1.52a9.84 9.84 0 0 0 4.83 1.24h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2z"/></svg>
+            Send Order on WhatsApp
+          </a>
+          <div style="margin-top:18px;"><button class="btn btn-outline btn-sm" id="printInvoiceBtn">🖨 Print Invoice</button></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="footer"><div class="container">
+  <div class="footer-bottom"><span>© 2026 Al-Rasheed Pharmacy. All rights reserved.</span><span><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a></span></div>
+</div></footer>
+<button class="back-to-top" aria-label="Back to top">↑</button>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/products.js"></script>
+<script>
+  const cartRoot = document.getElementById("cartRoot");
+  let lastOrderText = "";
+
+  function money(n){ return "Rs " + n.toLocaleString(); }
+
+  function renderCart(){
+    const items = Cart.detailedItems();
+    if(!items.length){
+      cartRoot.innerHTML = `
+        <div class="empty-cart">
+          <svg width="90" height="90" viewBox="0 0 24 24" fill="none" stroke="var(--line)" stroke-width="1.5" style="margin:0 auto 20px;"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+          <h3>Your cart is empty</h3>
+          <p style="color:var(--charcoal-60);margin:10px 0 24px;">Looks like you haven't added anything yet.</p>
+          <a href="products.html" class="btn btn-primary">Browse Products</a>
+        </div>`;
+      return;
+    }
+    const subtotal = Cart.subtotal();
+    const delivery = subtotal >= STORE.freeDeliveryThreshold ? 0 : STORE.deliveryFee;
+    const total = subtotal + delivery;
+    cartRoot.innerHTML = `
+      <div class="cart-layout">
+        <div>
+          ${items.map(i => `
+            <div class="cart-item" data-id="${i.id}">
+              <img src="${i.img}" alt="${i.name}">
+              <div>
+                <h4>${i.name}</h4>
+                <span class="meta">${money(i.price)} each</span>
+                <div><button class="remove-btn" data-remove="${i.id}">Remove</button></div>
+              </div>
+              <div class="qty-stepper" data-stepper="${i.id}">
+                <button type="button" data-step="-1" aria-label="Decrease quantity">−</button>
+                <input type="text" value="${i.qty}" readonly aria-label="Quantity">
+                <button type="button" data-step="1" aria-label="Increase quantity">+</button>
+              </div>
+              <strong>${money(i.lineTotal)}</strong>
+            </div>`).join("")}
+          <button class="btn btn-outline btn-sm" id="clearCartBtn">Clear Cart</button>
+        </div>
+        <div class="summary-card">
+          <h3 style="margin-bottom:16px;">Order Summary</h3>
+          <div class="summary-row"><span>Subtotal</span><span>${money(subtotal)}</span></div>
+          <div class="summary-row"><span>Delivery Fee</span><span>${delivery === 0 ? "FREE" : money(delivery)}</span></div>
+          ${delivery > 0 ? `<p style="font-size:.78rem;color:var(--charcoal-60);">Add ${money(STORE.freeDeliveryThreshold - subtotal)} more for free delivery.</p>` : ""}
+          <div class="summary-row total"><span>Total</span><span>${money(total)}</span></div>
+          <button class="btn btn-primary btn-block" id="goCheckoutBtn" style="margin-top:18px;">Proceed to Checkout</button>
+        </div>
+      </div>`;
+  }
+  renderCart();
+  window.addEventListener("cart:changed", renderCart);
+
+  cartRoot.addEventListener("click", (e) => {
+    const step = e.target.closest("[data-step]");
+    if(step){
+      const wrap = step.closest("[data-stepper]");
+      const id = wrap.dataset.stepper;
+      const input = wrap.querySelector("input");
+      let v = parseInt(input.value,10) + parseInt(step.dataset.step,10);
+      if(v<1) v=1;
+      Cart.setQty(id, v);
+      return;
+    }
+    const rm = e.target.closest("[data-remove]");
+    if(rm){ Cart.remove(rm.dataset.remove); return; }
+    if(e.target.id === "clearCartBtn"){ Cart.clear(); return; }
+    if(e.target.id === "goCheckoutBtn"){ goToStep("checkout"); }
+  });
+
+  function goToStep(name){
+    document.querySelectorAll(".checkout-section").forEach(s => s.classList.remove("is-active"));
+    document.getElementById("step-" + name).classList.add("is-active");
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(name === "checkout") renderSummarySticky();
+  }
+  document.getElementById("backToCartBtn").addEventListener("click", () => goToStep("cart"));
+
+  function renderSummarySticky(){
+    const subtotal = Cart.subtotal();
+    const delivery = subtotal >= STORE.freeDeliveryThreshold ? 0 : STORE.deliveryFee;
+    document.getElementById("summarySticky2").innerHTML = `
+      <h3 style="margin-bottom:16px;">Order Summary</h3>
+      <div class="summary-row"><span>Items</span><span>${Cart.count()}</span></div>
+      <div class="summary-row"><span>Subtotal</span><span>${money(subtotal)}</span></div>
+      <div class="summary-row"><span>Delivery</span><span>${delivery===0?"FREE":money(delivery)}</span></div>
+      <div class="summary-row total"><span>Total</span><span>${money(subtotal+delivery)}</span></div>`;
+  }
+
+  /* ---------------- Checkout form validation + WhatsApp generation ---------------- */
+  const form = document.getElementById("checkoutForm");
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let valid = true;
+    form.querySelectorAll("[required]").forEach(input => {
+      const field = input.closest(".field");
+      const ok = input.checkValidity();
+      field.classList.toggle("has-error", !ok);
+      if(!ok) valid = false;
+    });
+    if(!valid){ showToast("Please fill in all required fields"); return; }
+
+    const items = Cart.detailedItems();
+    if(!items.length){ showToast("Your cart is empty"); goToStep("cart"); return; }
+
+    const subtotal = Cart.subtotal();
+    const delivery = subtotal >= STORE.freeDeliveryThreshold ? 0 : STORE.deliveryFee;
+    const total = subtotal + delivery;
+    const data = Object.fromEntries(new FormData(form));
+
+    let msg = `*New Order — Al-Rasheed Pharmacy*%0A%0A`;
+    msg += `*Customer:* ${data.custName}%0A*Phone:* ${data.custPhone}%0A*Address:* ${data.custAddress}`;
+    if(data.custLandmark) msg += ` (near ${data.custLandmark})`;
+    msg += `%0A*City:* ${data.custCity}%0A*Preferred Time:* ${data.custTime}%0A*Payment:* ${data.custPayment}%0A%0A`;
+    msg += `*Order Items:*%0A`;
+    items.forEach(i => { msg += `• ${i.name} x${i.qty} — Rs ${i.lineTotal.toLocaleString()}%0A`; });
+    msg += `%0A*Subtotal:* Rs ${subtotal.toLocaleString()}%0A*Delivery:* ${delivery===0?"FREE":"Rs "+delivery.toLocaleString()}%0A*Grand Total:* Rs ${total.toLocaleString()}%0A`;
+    if(data.custNotes) msg += `%0A*Special Instructions:* ${data.custNotes}`;
+    msg += `%0A%0AEstimated Delivery: 30–60 minutes after confirmation.`;
+
+    document.getElementById("finalWhatsappBtn").href = `https://wa.me/${STORE.whatsapp}?text=${msg}`;
+    console.log("HI: ", msg)
+    lastOrderText = safelyDecodeURI(msg).replace(/\*/g,"").replace(/%0A/g,"\n");
+    goToStep("success");
+    fireConfetti();
+    Cart.clear();
+  });
+
+  function safelyDecodeURI(str) {
+  try {
+    // Replace any '%' that is NOT followed by two hex characters (0-9, a-f)
+    const cleanedStr = str.replace(/%(?![0-9a-fA-F]{2})/g, "%25");
+    return decodeURIComponent(cleanedStr);
+  } catch (e) {
+    console.error("Decoding failed:", e.message);
+    return str; 
+  }
+}
+
+  document.getElementById("printInvoiceBtn").addEventListener("click", () => {
+    const w = window.open("", "_blank");
+    w.document.write(`<pre style="font-family:monospace;font-size:14px;padding:20px;">${lastOrderText}</pre>`);
+    w.print();
+  });
+
+  function fireConfetti(){
+    const wrap = document.createElement("div");
+    wrap.className = "mini-confetti";
+    const colors = ["#16A06B","#5FD9A4","#3FA9F5","#E2A33B"];
+    for(let i=0;i<40;i++){
+      const p = document.createElement("div");
+      p.className = "confetti-piece";
+      p.style.left = Math.random()*100 + "%";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDelay = (Math.random()*0.5) + "s";
+      wrap.appendChild(p);
+    }
+    document.body.appendChild(wrap);
+    setTimeout(() => wrap.remove(), 3200);
+  }
+</script>
+</body>
+</html>
